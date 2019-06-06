@@ -23,9 +23,14 @@
 - Installation of the pipeline MutAid v1.0
     - Look at the differences between the two version
     - Test of the version v1.0
-    <Same probleme that the other version>
+        - Same problem that the other version
     
 ### Day 4 :
-- Run prepref program v1.0 at home
+- Run prepref program v1.0 ()
     - GATK Bundle files success
-    - hg19 files (in progress)
+    - hg19 files error need to fix gene annotation files
+- Piano : installation of packages with BiocLite
+    - "affy"/"yeast2.db"/"rsbml"/"plotrix"/"limma"/"plier"/"affyPLM"/"gtools"/"biomaRt"/"snowfall"/"AnnotationDbi"
+- Run test data (MutAid v1.0)
+- Change version of test MutAid v1.0
+
