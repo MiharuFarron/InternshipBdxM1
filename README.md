@@ -13,14 +13,14 @@
 - Try to run MutAid with test data (MutAid) and test data (TD Galaxy Mycobacterium)
     - FastQC OK
     - Map (BWA) FAIL
-    - Variant (Varscan) FAIL
+    - Variant (samtools) FAIL
 
 ### Day 3 : 
 - Try to find solution to import files of hg19 (prepref program)
 - Try to run MutAid with test data (TD Galaxy Mycobacterium)
     - FastQC OK
     - Map (BWA) OK
-    - Variant (Varscan) FAIL -> 0 SNP found
+    - Variant (samtools) FAIL -> 0 SNP found
 - Installation of the pipeline MutAid v1.0
     - Look at the differences between the two version
     - Test of the version v1.0
@@ -46,5 +46,17 @@
         - Good result similar to the result obtained with Galaxy (need to look at the parameters)
         - FastQC OK/Mapping OK/Variant detection OK/Variant annotation ERROR
         - Same error : cosmic file missing 
-Map : BWA Detection variant : VARSCAN
-Map : BOWTIE Detection variant : VARSCAN 
+Map : BWA Detection variant : samtools
+Map : BOWTIE Detection variant : samtools 
+
+### Day 6 :
+- write_output.py (Pipeline) Cosmic file process in comment
+- Dl refLink.txt 
+- Run on test data Human Map : BWA Variant caller : samtools //81 Indels SNP : 1272//
+
+### Day 7 : 
+- Run on test data Human // Map : Bowtie2 Variant caller : samtools //117 Indels SNP : 1751//
+- Run on test data Human // Map : TMAP Variant caller : samtools //107 Indels SNP : 1611//
+- Bowtie and GSNAP Error (Map)
+- Need to find a solution about selection of the variant caller/samtools by default 
+
