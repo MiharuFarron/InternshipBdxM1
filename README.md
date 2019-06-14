@@ -58,5 +58,14 @@ Map : BOWTIE Detection variant : samtools
 - Run on test data Human // Map : Bowtie2 Variant caller : samtools //117 Indels SNP : 1751//
 - Run on test data Human // Map : TMAP Variant caller : samtools //107 Indels SNP : 1611//
 - Bowtie and GSNAP Error (Map)
-- Need to find a solution about selection of the variant caller/samtools by default 
+- Need to find a solution about selection of the variant caller
 
+### Day 8 :
+- Files available samtools.vcf freebayes.vcf (VarScan ?)
+- <RDV P.Thebault création d'un script permettant de lancer le pipeline avec les différents types de mapper/detecteur de variant, ensuite depuis le fichier vcf création d'un tableau multivarié, PCA/ Résultat sous R Shiny ?>
+
+### Day 9 :
+- Begin new script > installation of vcf module python 
+```python 
+s = "pip install PyVcf" 
+print s```
