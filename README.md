@@ -1,5 +1,5 @@
 # Internship M1
-## Subject : Development of an interface and pipeline of NGS analyses for variant detection.
+## Subject : Development of an interface for comparison of variants detections results
 
 ### Day 1:
 - Discover and Installation of the pipeline MutAid v1.1
@@ -7,7 +7,8 @@
 - Installation of the R package Piano
     - https://bioconductor.org/packages/3.9/bioc/html/piano.html
     - Installation for R 3.3 
-    <RDV P.Thebault Présentation du sujet>
+    
+    <<RDV P.Thebault Présentation du sujet>>
 
 ### Day 2 :
 - Try to run MutAid with test data (MutAid) and test data (TD Galaxy Mycobacterium)
@@ -25,7 +26,8 @@
     - Look at the differences between the two version
     - Test of the version v1.0
         - Same problem that the other version
-    <RDV P.Thebault E.Darbo Présentation avancement + sujet. Concentration sur le fastq human du TD Galaxy>
+        
+    <<RDV P.Thebault E.Darbo Présentation avancement + sujet. Concentration sur le fastq human du TD Galaxy>>
 ### Day 4 :
 - Run prepref program v1.0 ()
     - GATK Bundle files success
@@ -62,7 +64,8 @@ Map : BOWTIE Detection variant : samtools
 
 ### Day 8 :
 - Files available samtools.vcf freebayes.vcf (VarScan ?)
-- <RDV P.Thebault création d'un script permettant de lancer le pipeline avec les différents types de mapper/detecteur de variant, ensuite depuis le fichier vcf création d'un tableau multivarié, PCA/ Résultat sous R Shiny ?>
+
+<<RDV P.Thebault création d'un script permettant de lancer le pipeline avec les différents types de mapper/detecteur de variant, ensuite depuis le fichier vcf création d'un tableau multivarié, PCA, Présentation des résultats (Rshiny)>>
 
 ### Day 9 :
 - Begin new script > installation of vcf module python 
@@ -78,15 +81,21 @@ pip install PyVcf
 ### Day 11 :
 - Still working on the script : MuTAid Pipemine, obtention of vcf file, creation of a multivariate data table, try to obtain a PCA (Python).
 - Multivariate table :
-|POS|QUAL|MAP|VARCALL||--|:--:|:--:|--:||
-|v1|v2|v3|v4|
-|..|..|str(bwa/tmap/bowtie2)|str(samtools/varscan/freebayes)|
+
+|POS|QUAL|MAP|VARCALL|
+|---|---|---|---|
+|int(individuals)|int(value)|str(bwa/tmap/bowtie2)|str(samtools/varscan/freebayes)|
 
 ### Day 12 :
 - Modification of the multivariate data table : 
     - Choose to work with Coverage and Allele Frequency and not Quality (avoid NA value for mapper and variant caller).
-|POS|M1V1|M1V2|M1V3|M2V1|M2V2|M2V3|M3V1|M3V2|M3V3||--|:--:|:--:|:--:|:--:|:--|:--:|:--:|--:||
-<RDV avec P.Thébault et E.Darbo Revue le tableau des données multivariées. Attention pour l'instant gestion des données manquantes NA remplacé par 0>
+    
+|POS|M1V1|M1V2|M1V3|M2V1|M2V2|M2V3|M3V1|M3V2|M3V3|
+|---|---|---|---|---|---|---|---|---|---|
+|int(individuals)|int(value)|int(value)|int(value)|int(value)|int(value)|int(value)|int(value)|int(value)|int(value)|
+
+<<RDV avec P.Thébault et E.Darbo Revoir le tableau des données multivariées. Attention pour l'instant gestion des données manquantes NA remplacé par 0>>
+
 ### Day 13 : 
 - Obtention of two multivariate data table : coverage.csv allfreq.csv
 - PCA in Rstudio
