@@ -66,6 +66,30 @@ Map : BOWTIE Detection variant : samtools
 
 ### Day 9 :
 - Begin new script > installation of vcf module python 
-```python 
-s = "pip install PyVcf" 
-print s```
+```bash
+pip install PyVcf
+```
+
+### Day 10 :
+- Test of PCA on test_multi_data.csv (Rstudio)
+- Obtention of multiple graph (need to know if they are rigth)
+- Try to obtain result with MutAid data
+
+### Day 11 :
+- Still working on the script : MuTAid Pipemine, obtention of vcf file, creation of a multivariate data table, try to obtain a PCA (Python).
+- Multivariate table :
+|POS|QUAL|MAP|VARCALL|
+|--|--|--|--|
+|v1|v2|v3|v4|
+|..|..|str(bwa/tmap/bowtie2)|str(samtools/varscan/freebayes)|
+
+### Day 12 :
+- Modification of the multivariate data table : 
+    - Choose to work with Coverage and Allele Frequency and not Quality (avoid NA value for mapper and variant caller).
+|POS|M1V1|M1V2|M1V3|M2V1|M2V2|M2V3|M3V1|M3V2|M3V3|
+|--|--|--|--|--|--|--|--|--|
+<RDV avec P.Thébault et E.Darbo Revue le tableau des données multivariées. Attention pour l'instant gestion des données manquantes NA remplacé par 0>
+### Day 13 : 
+- Obtention of two multivariate data table : coverage.csv allfreq.csv
+- PCA in Rstudio
+- Need to find a solution for NA values (replace by 0)
