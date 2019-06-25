@@ -100,3 +100,15 @@ pip install PyVcf
 - Obtention of two multivariate data table : coverage.csv allfreq.csv
 - PCA in Rstudio
 - Need to find a solution for NA values (replace by 0)
+
+### Day 14 : 
+- NA values : package missMDA 
+
+### Day 15 :
+- Study of ddspls package
+
+### Day 16 :
+- Improvement of the python script
+
+### Day 17 :
+
