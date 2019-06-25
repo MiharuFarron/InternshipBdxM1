@@ -10,49 +10,58 @@ import vcf
 Domitille COQ--ETCHEGARAY
 June 2019
 """
+
+
 #Time
 localtime = time.asctime( time.localtime(time.time()) )
 
-# #Argument python
-# parser = argparse.ArgumentParser(description='Mapper selection')
+#Initialization of MutAid
+target_file = raw_input("Path of the Target File : \n")
 
-# parser.add_argument('map', metavar='m', type=str, help='Selection of the mapper')
-# parser.add_argument('csvfile', metavar='c', help='Name of the csv file')
-# args = parser.parse_args()
+#Modification of the file MutAidOptions_NGS
+mapper = ["bowtie2","bwa","tmap"]
+for arg in mapper : 
+    OptionMutaid = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_NGS","r")
+    text = "" 
+    for line in OptionMutaid.readlines():
+            if "Mapper_Name" in line and "###" not in line :
+                map_name = "Mapper_Name = %s \n"%arg
+                text = text + map_name
+            elif "Target_File" in line and "#" not in line :
+                tag_file = "Target_File = %s \n"%target_file
+                text = text + tag_file
+            else :
+                text = text + line 
+    OptionMutaid.close()
 
-# #Initialization of MutAid
+#Creation of a file of options for our different test
+    File = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_Internship","w")
+    File.write(text)
+    File.close()
 
-# OptionMutaid = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_NGS","r")
-# text = "" 
-# for line in OptionMutaid.readlines():
-#         if "Mapper_Name" in line and "###" not in line :
-#                 map_name = "Mapper_Name = %s"%(args.map)
-#                 text = text + map_name
-#         else :
-#                 text = text + line 
-# OptionMutaid.close()
+#Run MutAid Pipeline
 
-# File = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_Internship","w")
-# File.write(text)
-# File.close()
+    print "MutAid Pipeline begin at \t"+str(localtime)
+    #Directory of the pipeline MutAid
+    os.chdir("/net/travail/dcetchegaray/MutAid_v1.0/")
+    os.system("./mutaid --option_file MutAidOptions_Internship")
 
-# #Run MutAid Pipeline
+#Copy the files of interest in our directory of work
 
-# print "MutAid Pipeline begin at \t"+str(localtime)
-# os.chdir("/net/travail/dcetchegaray/MutAid_v1.0/")
-# os.system("./mutaid --option_file MutAidOptions_Internship")
+    print "Copy files of interest begin at \t"+str(localtime)
+    #Test if the directory exist if not create a new directory
+    if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s"%(arg)):
+        os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s"%(arg))
+    #Copy Freebayes vcf Samtools vcf Varscan txt files
+    os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s/"%(arg,arg,arg))
+    #Cope Varscan vcf file
+    os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg))
+    #Directory of our script
+    os.chdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/")
 
-# #Copy the files of interest in our directory of work
-
-# os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s"%(args.map))
-# os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s/"%(args.map,args.map,args.map))
-# os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(args.map,args.map))
-# os.chdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/")
-
-# #VCF parser, text parser
+#VCF parser, text parser
 
 print "Parsing files begin at \t"+str(localtime)
-mapper = ["bowtie2","bwa","tmap"]
 varcall = ["","_samtools_variants","_freebayes_variants"]
 
 multi_data= {}
@@ -62,7 +71,7 @@ for arg in mapper :
     file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
     for line in file_pos.readlines() :
         text = text + [line.split()]
-        multi_data[text[a][2]] = {"Coverage" : {"tmap" : None, "tmap_samtools_variants" : None, "tmap_freebayes_variants": None,"bwa" : None, "bwa_samtools_variants" : None, "bwa_freebayes_variants": None,"bowtie2" : None, "bowtie2_samtools_variants" : None, "bowtie2_freebayes_variants": None}, "VarFreq" : {"tmap" : None, "tmap_samtools_variants" : None, "tmap_freebayes_variants": None,"bwa" : None, "bwa_samtools_variants" : None, "bwa_freebayes_variants": None,"bowtie2" : None, "bowtie2_samtools_variants" : None, "bowtie2_freebayes_variants": None}}
+        multi_data[text[a][2]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}, "VarFreq" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}}
         a=a+1
     file_pos.close()
 for arg in mapper : 
@@ -107,29 +116,16 @@ for key,value in multi_data.items() :
         for invalue in value2.values() :
             if key2 == "Coverage" : 
                 if a == 8 :
-                    if invalue == None : 
-                        multi_data_file.write(str(0)+"\n")
-                    else :  
-                        multi_data_file.write(str(invalue)+"\n")
+                    multi_data_file.write(str(invalue)+"\n")
                 else : 
-                    if invalue == None : 
-                        multi_data_file.write(str(0)+"\t")
-                    else : 
-                        multi_data_file.write(str(invalue)+"\t")
+                    multi_data_file.write(str(invalue)+"\t")
             elif key2 == "VarFreq" :
                 if a == 8 :
-                    if invalue == None : 
-                        multi_data_file2.write(str(0)+"\n")
-                    else : 
-                        multi_data_file2.write(str(invalue)+"\n")
+                    multi_data_file2.write(str(invalue)+"\n")
                 else : 
-                    if invalue == None : 
-                        multi_data_file2.write(str(0)+"\t")
-                    else : 
-                        multi_data_file2.write(str(invalue)+"\t")
+                    multi_data_file2.write(str(invalue)+"\t")
             a=a+1
 
 multi_data_file.close()
 multi_data_file2.close()
-
 print "End of Script at\t"+str(localtime)
