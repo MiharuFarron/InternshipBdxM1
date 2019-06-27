@@ -14,14 +14,14 @@
 - Try to run MutAid with test data (MutAid) and test data (TD Galaxy Mycobacterium)
     - FastQC OK
     - Map (BWA) FAIL
-    - Variant (samtools) FAIL
+    - Variant (varscan) FAIL
 
 ### Day 3 : 
 - Try to find solution to import files of hg19 (prepref program)
 - Try to run MutAid with test data (TD Galaxy Mycobacterium)
     - FastQC OK
     - Map (BWA) OK
-    - Variant (samtools) FAIL -> 0 SNP found
+    - Variant (varscan) FAIL -> 0 SNP found
 - Installation of the pipeline MutAid v1.0
     - Look at the differences between the two version
     - Test of the version v1.0
@@ -48,22 +48,22 @@
         - Good result similar to the result obtained with Galaxy (need to look at the parameters)
         - FastQC OK/Mapping OK/Variant detection OK/Variant annotation ERROR
         - Same error : cosmic file missing 
-Map : BWA Detection variant : samtools
-Map : BOWTIE Detection variant : samtools 
+Map : BWA Detection variant : varscan
+Map : BOWTIE Detection variant : varscan 
 
 ### Day 6 :
 - write_output.py (Pipeline) Cosmic file process in comment
 - Dl refLink.txt 
-- Run on test data Human Map : BWA Variant caller : samtools //81 Indels SNP : 1272//
+- Run on test data Human Map : BWA Variant caller : varscan //81 Indels SNP : 1272//
 
 ### Day 7 : 
-- Run on test data Human // Map : Bowtie2 Variant caller : samtools //117 Indels SNP : 1751//
-- Run on test data Human // Map : TMAP Variant caller : samtools //107 Indels SNP : 1611//
+- Run on test data Human // Map : Bowtie2 Variant caller : varscan //117 Indels SNP : 1751//
+- Run on test data Human // Map : TMAP Variant caller : varscan //107 Indels SNP : 1611//
 - Bowtie and GSNAP Error (Map)
 - Need to find a solution about selection of the variant caller
 
 ### Day 8 :
-- Files available samtools.vcf freebayes.vcf (VarScan ?)
+- Files available varscan.vcf freebayes.vcf (VarScan ?)
 
 <<RDV P.Thebault création d'un script permettant de lancer le pipeline avec les différents types de mapper/detecteur de variant, ensuite depuis le fichier vcf création d'un tableau multivarié, PCA, Présentation des résultats (Rshiny)>>
 
@@ -84,10 +84,10 @@ pip install PyVcf
 
 |POS|QUAL|MAP|VARCALL|
 |---|---|---|---|
-|int(individuals)|int(value)|str(bwa/tmap/bowtie2)|str(samtools/varscan/freebayes)|
+|int(individuals)|int(value)|str(bwa/tmap/bowtiesamtoolsreebayes)|
 
 ### Day 12 :
-- Modification of the multivariate data table : 
+- Modification of the multivariate data table : samtools
     - Choose to work with Coverage and Allele Frequency and not Quality (avoid NA value for mapper and variant caller).
     
 |POS|M1V1|M1V2|M1V3|M2V1|M2V2|M2V3|M3V1|M3V2|M3V3|
@@ -111,4 +111,15 @@ pip install PyVcf
 - Improvement of the python script
 
 ### Day 17 :
+- **PCA/Singular Value Decomposition/matrix completion is implemented** in the package **missMDA** for numerical, categorical and mixed data. **softImpute** contains several methods for iterative matrix completion, as well as filling and **denoiseR** for numerical variables, or mimi that uses low rank assumption to impute mixed datasets. The package **pcaMethods** offers some Bayesian implementation of PCA with missing data. **NIPALS** (based on SVD computation) is implemented in the packages mixOmics (for PCA and PLS), **ade4**, **nipals** and **plsRglm** (for generalized model PLS). **ddsPLS** implements a multi-block imputation method based on PLS in a supervise framework.**ROptSpace** and **CMF** proposes a matrix completion method under low-rank assumption and collective matrix factorization for imputation using Bayesian matrix completion for groups of variables (binary, quantitative, poisson). Imputation for groups is also avalaible in the **missMDA** in the function imputeMFA. SOURCE : https://rviews.rstudio.com/2018/10/26/cran-s-new-missing-values-task-view/
+- Creation of PA multivariate table
+<<RDV avec P.Thebault et E.Darbo Modification des valeurs POS POS+CHR Only SNP Scale Varscan value  Voir possibilté de Présence Absence>>
 
+### Day 18 : 
+- Creation of UPSET R plot from pos_text.txt
+- Verification of vc_files output column values
+
+### Day 19 : 
+<<RDV E.Darbo 10h Determination of DP threshold 10 // Correction of NA rows>>
+- Modification of coverage csv table
+- Creation of new PA table 
