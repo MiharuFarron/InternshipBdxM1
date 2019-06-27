@@ -16,7 +16,7 @@ June 2019
 localtime = time.asctime( time.localtime(time.time()) )
 
 #Initialization of MutAid
-target_file = raw_input("Path of the Target File : \n")
+target_file = raw_input("Path of the Target File : \n") #Exemple "test_data/InternshipTest/Internship_target_file.txt"
 
 #Modification of the file MutAidOptions_NGS
 mapper = ["bowtie2","bwa","tmap"]
@@ -50,11 +50,11 @@ for arg in mapper :
 
     print "Copy files of interest begin at \t"+str(localtime)
     #Test if the directory exist if not create a new directory
-    if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s"%(arg)):
-        os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s"%(arg))
+    if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg)):
+        os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg))
     #Copy Freebayes vcf Samtools vcf Varscan txt files
-    os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/%s/"%(arg,arg,arg))
-    #Cope Varscan vcf file
+    os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg,arg))
+    #Copy Varscan vcf file
     os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg))
     #Directory of our script
     os.chdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/")
@@ -71,34 +71,48 @@ for arg in mapper :
     file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
     for line in file_pos.readlines() :
         text = text + [line.split()]
-        multi_data[text[a][2]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}, "VarFreq" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}}
+        multi_data[text[a][2]+text[a][0]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}, "VarFreq" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}}
         a=a+1
     file_pos.close()
 for arg in mapper : 
     for fi in varcall : 
         vcf_reader = vcf.Reader(open("./Hg19Galaxy/%s/ptest%s.vcf"%(arg,fi),"r"))
         for record in vcf_reader :
-            if multi_data.has_key(str(record.POS)) == True:
-                multi_data[str(record.POS)]["Coverage"]["%s%s"%(arg,fi)] = record.INFO['DP']
-                if fi != "" and fi == "_samtools_variants" : 
-                    multi_data[str(record.POS)]["VarFreq"]["%s%s"%(arg,fi)] = record.INFO['AF1']
-                elif fi != "" and fi == "_freebayes_variants" : 
-                    af = record.INFO['AF']
-                    multi_data[str(record.POS)]["VarFreq"]["%s%s"%(arg,fi)] = af[0]
-            if fi == "" : 
-                text_var = open("./Hg19Galaxy/%s/ptest_varscan_variants.txt"%(arg),"r")
-                res = []
-                a=0
-                for line in text_var.readlines() :
-                    res = res+[line.split()]
-                    if res[a][6] != "VarFreq" :
-                        freq = res[a][6]
-                        freq = freq.replace("%","")
-                        freq = freq.replace(",",".")
-                        freqall = float(freq)/100
-                        multi_data[str(record.POS)]["VarFreq"]["%s%s"%(arg,fi)] = str(freqall)
+            if multi_data.has_key(str(record.POS)+str(record.CHROM)) :
+                if record.INFO['DP'] > 10 and record.is_snp : 
+                    multi_data[str(record.POS)+str(record.CHROM)]["Coverage"]["%s%s"%(arg,fi)] = record.INFO['DP']
+                    if fi != "" and fi == "_samtools_variants" : 
+                        multi_data[str(record.POS)+str(record.CHROM)]["VarFreq"]["%s%s"%(arg,fi)] = record.INFO['AF1']
+                    elif fi != "" and fi == "_freebayes_variants" : 
+                        af = record.INFO['AF']
+                        multi_data[str(record.POS)+str(record.CHROM)]["VarFreq"]["%s%s"%(arg,fi)] = af[0]
+                if fi == "" : 
+                    text_var = open("./Hg19Galaxy/%s/ptest_varscan_variants.txt"%(arg),"r")
+                    res = []
+                    a=0
+                    for line in text_var.readlines() :
+                        res = res+[line.split()]
+                        if (str(res[a][1])+str(record.CHROM)) == (str(record.POS)+str(record.CHROM)) :
+                            if res[a][6] != "VarFreq" :
+                                freq = res[a][6]
+                                freq = freq.replace("%","")
+                                freq = freq.replace(",",".")
+                                multi_data[str(record.POS)+str(record.CHROM)]["VarFreq"]["%s%s"%(arg,fi)] = str(freq)
+                            a=a+1
+                    text_var.close()
+
+# Clear full NA rows 
+
+for key, value in multi_data.items() :
+    a=0
+    for key2, value2 in value.items() : 
+        for invalue in value2.values() :
+            if key2 == "Coverage" : 
+                if invalue == "NA" :
                     a=a+1
-                text_var.close()
+        if a==9:
+            del multi_data[key]
+
 
 # Creation of multivariate data table 
 
@@ -128,4 +142,66 @@ for key,value in multi_data.items() :
 
 multi_data_file.close()
 multi_data_file2.close()
+
+
+#Presence Absence 
+print "PA\n"
+
+varcall = ["","_samtools_variants","_freebayes_variants"]
+
+multi_data2= {}
+for arg in mapper :
+    text = []
+    a=0
+    file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
+    for line in file_pos.readlines() :
+        text = text + [line.split()]
+        multi_data2[text[a][2]+text[a][0]] = {"tmap" : 0, "tmap_samtools_variants" : 0, "tmap_freebayes_variants": 0,"bwa" : 0, "bwa_samtools_variants" : 0, "bwa_freebayes_variants": 0,"bowtie2" : 0, "bowtie2_samtools_variants" : 0, "bowtie2_freebayes_variants": 0}
+        a=a+1    
+    file_pos.close()
+
+for arg in mapper :
+    text=[]
+    a=0
+    file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
+    for line in file_pos.readlines() :
+        text = text + [line.split()]
+        varcall = text[a][3].split(";")
+        if 'samtools' in varcall : 
+            multi_data2[text[a][2]+text[a][0]]["%s_samtools_variants"%arg]=1
+        elif 'varscan' in varcall :
+            multi_data2[text[a][2]+text[a][0]]["%s"%arg]=1 
+        elif 'freebayes' in varcall : 
+            multi_data2[text[a][2]+text[a][0]]["%s_freebayes_variants"%arg]=1 
+        a=a+1
+    file_pos.close()
+
+# Presence Absence CoV
+print "PACOV \n"
+multi_data_file3 = open("test_multi_data_PACov.csv","w")
+header = "POS"+"\t"+"bwafree"+"\t"+"bwavar"+"\t"+"tmapvar"+"\t"+"bwasam"+"\t"+"bowtie2free"+"\t"+"bowtie2sam"+"\t"+"tmapfree"+"\t"+"tmapsam"+"\t"+"bowtie2var"+"\n"
+multi_data_file3.write(header)
+for key,value in multi_data.items() :
+    multi_data_file3.write(str(key)+"\t")
+    for key2,value2 in value.items() :
+        a=0
+        for invalue in value2.values() :
+            if key2 == "Coverage" : 
+                if a == 8 :
+                    if invalue == "NA" :
+                        multi_data_file3.write(str(0)+"\n")
+                    else : 
+                        multi_data_file3.write(str(1)+"\n")
+            
+                else : 
+                    if invalue == "NA" :
+                        multi_data_file3.write(str(0)+"\t")
+                    else : 
+                        multi_data_file3.write(str(1)+"\t")
+                    
+            a=a+1
+
+multi_data_file3.close()
+
+
 print "End of Script at\t"+str(localtime)
