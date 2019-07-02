@@ -2,6 +2,7 @@ library(FactoMineR)
 library(missMDA)
 library(BBmisc)
 library(UpSetR)
+library(naniar)
 
 ####MISSMDA
 #Couverture
@@ -29,9 +30,10 @@ res.pca <- PCA(coverage,scale.unit = TRUE,ncp=2,graph=T)
 
 
 ####UPSETR
-PA <- read.csv("test_multi_data_PA.csv",header=TRUE,sep="\t")
+PA <- read.csv("./OutputData/test_multi_data_coverage.csv",header=TRUE,sep="\t")
 row.names(PA) <- as.numeric(PA$POS)
 PA <- PA[,-1]
 summary(PA)
-upset(PA,nsets=10,order.by="freq")
-  
+write.csv(PA,"./OutputData/RMultidatacov.csv")
+upset(PA,nsets=10,order.by="freq",sets.x.label = "Combinaison of mapper/variantcaller",empty.intersections = "on")
+gg_miss_upset(PA,nsets=10)
