@@ -1,0 +1,15 @@
+{
+	"file": "https://github.com/MiharuFarron/InternshipBdxM1/blob/master/OutputData/test_multi_data_PA.csv",
+	"name": "Test",
+	"header": 0,
+	"separator": "\t",
+	"skip": 0,
+	"meta": [
+        { "type": "id", "index": 0, "name": "POS" }
+	],
+	"sets": [
+		{ "format": "binary", "start": 1, "end": 10 }
+    ],
+    "author" : "Domitille COQ--ETCHEGARAY",
+    "description" : "Internship data test"
+}
