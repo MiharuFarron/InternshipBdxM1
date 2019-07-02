@@ -8,8 +8,6 @@
         { "type": "id", "index": 0, "name": "POS" }
 	],
 	"sets": [
-		{ "format": "binary", "start": 1, "end": 10 }
-    ],
-    "author" : "Domitille COQ--ETCHEGARAY",
-    "description" : "Internship data test"
+		{ "format": "binary", "start": 1, "end": 9 }
+    ]
 }
