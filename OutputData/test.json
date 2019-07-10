@@ -4,10 +4,10 @@
   "header": 0,
   "separator": "\t",
   "skip": 0,
-  "meta": [
+  "meta": 
     {"type": "id","index": 0,"name": "POS"}
-  ],
-  "sets": [
+  ,
+  "sets": 
     {"format": "binary","start": 1,"end": 9}
-  ]
+  
 }
