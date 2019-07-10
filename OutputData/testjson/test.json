@@ -1,0 +1,17 @@
+{
+  "file": "https://raw.githubusercontent.com/MiharuFarron/InternshipBdxM1/master/OutputData/test_multi_data_PACov.csv",
+  "name": "SNPFile",
+  "header": 0,
+  "separator": "\t",
+  "skip": 0,
+  "meta": {
+    "type": "id",
+    "index": 0,
+    "name": "POS"
+  },
+  "sets": {
+    "format": "binary",
+    "start": 3,
+    "end": 11
+  }
+}
