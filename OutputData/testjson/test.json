@@ -4,11 +4,23 @@
   "header": 0,
   "separator": "\t",
   "skip": 0,
-  "meta": {
-    "type": "id",
-    "index": 0,
-    "name": "POS"
-  },
+  "meta": [
+    {
+      "type": "id",
+      "index": 0,
+      "name": "POS"
+    },
+    {
+      "type": "string",
+      "index": 1,
+      "name": "REF"
+    },
+    {
+      "type": "string",
+      "index": 2,
+      "name": "ALT"
+    }
+  ],
   "sets": {
     "format": "binary",
     "start": 4,
