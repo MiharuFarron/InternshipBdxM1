@@ -1,5 +1,5 @@
 {
-  "file": "https://raw.githubusercontent.com/MiharuFarron/InternshipBdxM1/master/OutputData/test_multi_data_PACov.csv",
+  "file": "https://raw.githubusercontent.com/MiharuFarron/InternshipBdxM1/master/OutputData/test_multi_data_PACov3.csv",
   "name": "SNPFile",
   "header": 0,
   "separator": "\t",
@@ -9,21 +9,11 @@
       "type": "id",
       "index": 0,
       "name": "POS"
-    },
-    {
-      "type": "integer",
-      "index": 1,
-      "name": "REF"
-    },
-    {
-      "type": "integer",
-      "index": 2,
-      "name": "ALT"
     }
   ],
   "sets": {
     "format": "binary",
-    "start": 3,
-    "end": 11
+    "start": 1,
+    "end": 9
   }
 }
