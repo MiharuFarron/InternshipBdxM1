@@ -11,12 +11,12 @@
       "name": "POS"
     },
     {
-      "type": "string",
+      "type": "integer",
       "index": 1,
       "name": "REF"
     },
     {
-      "type": "string",
+      "type": "integer",
       "index": 2,
       "name": "ALT"
     }
