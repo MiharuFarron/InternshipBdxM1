@@ -1,8 +1,8 @@
 {
   "file" : "https://raw.githubusercontent.com/MiharuFarron/InternshipBdxM1/master/OutputData/test_multi_data_PACov.csv",
   "name" : "SNPFileCoverage",
-  "header" : 1,
-  "separator": "\t",
+  "header" : 0,
+  "separator": ";",
   "skip" : 0,
   "meta" : [
     {"type":"id","index":0,"name":"POS"},

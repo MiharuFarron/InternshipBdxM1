@@ -71,7 +71,8 @@ for arg in mapper :
     file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
     for line in file_pos.readlines() :
         text = text + [line.split()]
-        multi_data[text[a][2]+text[a][0]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"}, "VarFreq" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"},"Info":{"REF":"NA","ALT":"NA"}}
+        multi_data[text[a][2]+text[a][0]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"},
+        "Info":{"REF":"NA","ALT":"NA"}}
         a=a+1
     file_pos.close()
 for arg in mapper : 
@@ -83,26 +84,6 @@ for arg in mapper :
                     multi_data[str(record.POS)+str(record.CHROM)]["Coverage"]["%s%s"%(arg,fi)] = record.INFO['DP']
                     multi_data[str(record.POS)+str(record.CHROM)]["Info"]["ALT"] = record.ALT
                     multi_data[str(record.POS)+str(record.CHROM)]["Info"]["REF"] = record.REF
-                    if fi != "" and fi == "_samtools_variants" : 
-                        multi_data[str(record.POS)+str(record.CHROM)]["VarFreq"]["%s%s"%(arg,fi)] = record.INFO['AF1']
-                    elif fi != "" and fi == "_freebayes_variants" : 
-                        af = record.INFO['AF']
-                        multi_data[str(record.POS)+str(record.CHROM)]["VarFreq"]["%s%s"%(arg,fi)] = af[0]
-                if fi == "" : 
-                    text_var = open("./Hg19Galaxy/%s/ptest_varscan_variants.txt"%(arg),"r")
-                    res = []
-                    a=0
-                    for line in text_var.readlines() :
-                        res = res+[line.split()]
-                        if (str(res[a][1])+str(record.CHROM)) == (str(record.POS)+str(record.CHROM)) :
-                            if res[a][6] != "VarFreq" :
-                                freq = res[a][6]
-                                freq = freq.replace("%","")
-                                freq = freq.replace(",",".")
-                                multi_data[str(record.POS)+str(record.CHROM)]["VarFreq"]["%s%s"%(arg,fi)] = str(freq)
-                            a=a+1
-                    text_var.close()
-
 # Clear full NA rows 
 
 for key, value in multi_data.items() :
@@ -120,13 +101,10 @@ for key, value in multi_data.items() :
 
 print "Creation of csv files begin at \t"+str(localtime)
 multi_data_file = open("test_multi_data_coverage.csv","w")
-multi_data_file2 = open("test_multi_data_allfreq.csv","w")
-header = "POS"+"\t"+"bwafree"+"\t"+"bwavar"+"\t"+"tmapvar"+"\t"+"bwasam"+"\t"+"bowtie2free"+"\t"+"bowtie2sam"+"\t"+"tmapfree"+"\t"+"tmapsam"+"\t"+"bowtie2var"+"\n"
+header = "POS"+";"+"REF"+";"+"ALT"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
 multi_data_file.write(header)
-multi_data_file2.write(header)
 for key,value in multi_data.items() :
-    multi_data_file.write(str(key)+"\t")
-    multi_data_file2.write(str(key)+"\t")
+    multi_data_file.write(str(key)+";")
     for key2,value2 in value.items() :
         a=0
         for invalue in value2.values() :
@@ -134,75 +112,20 @@ for key,value in multi_data.items() :
                 if a == 8 :
                     multi_data_file.write(str(invalue)+"\n")
                 else : 
-                    multi_data_file.write(str(invalue)+"\t")
-            elif key2 == "VarFreq" :
-                if a == 8 :
-                    multi_data_file2.write(str(invalue)+"\n")
-                else : 
-                    multi_data_file2.write(str(invalue)+"\t")
+                    multi_data_file.write(str(invalue)+";")
             a=a+1
 
 multi_data_file.close()
-multi_data_file2.close()
-
-
-#Presence Absence 
-print "PA\n"
-
-varcall = ["","_samtools_variants","_freebayes_variants"]
-
-multi_data2= {}
-for arg in mapper :
-    text = []
-    a=0
-    file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
-    for line in file_pos.readlines() :
-        text = text + [line.split()]
-        multi_data2[text[a][2]+text[a][0]] = {"tmap" : 0, "tmap_samtools_variants" : 0, "tmap_freebayes_variants": 0,"bwa" : 0, "bwa_samtools_variants" : 0, "bwa_freebayes_variants": 0,"bowtie2" : 0, "bowtie2_samtools_variants" : 0, "bowtie2_freebayes_variants": 0}
-        a=a+1    
-    file_pos.close()
-
-for arg in mapper :
-    text=[]
-    a=0
-    file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
-    for line in file_pos.readlines() :
-        text = text + [line.split()]
-        varcall = text[a][3].split(";")
-        if 'samtools' in varcall : 
-            multi_data2[text[a][2]+text[a][0]]["%s_samtools_variants"%arg]=1
-        elif 'varscan' in varcall :
-            multi_data2[text[a][2]+text[a][0]]["%s"%arg]=1 
-        elif 'freebayes' in varcall : 
-            multi_data2[text[a][2]+text[a][0]]["%s_freebayes_variants"%arg]=1 
-        a=a+1
-    file_pos.close()
-
-multi_data_file4=open("test_multi_data_PA.csv","w")
-header = "POS"+"\t"+"bwafree"+"\t"+"bwavar"+"\t"+"tmapvar"+"\t"+"bwasam"+"\t"+"bowtie2free"+"\t"+"bowtie2sam"+"\t"+"tmapfree"+"\t"+"tmapsam"+"\t"+"bowtie2var"+"\n"
-multi_data_file4.write(header)
-for key,value in multi_data2.items() :
-    multi_data_file4.write(str(key)+"\t")
-    a=0
-    for invalue in value.values() :
-        if key2 == "Coverage" : 
-            if a == 8 :  
-                multi_data_file4.write(str(invalue)+"\n")
-            else : 
-                multi_data_file4.write(str(invalue)+"\t")
-        a=a+1
-
-multi_data_file4.close()
 
 # Presence Absence CoV
 print "PACOV \n"
 multi_data_file3 = open("test_multi_data_PACov.csv","w")
-header = "POS"+"\t"+"bwafree"+"\t"+"bwavar"+"\t"+"tmapvar"+"\t"+"bwasam"+"\t"+"bowtie2free"+"\t"+"bowtie2sam"+"\t"+"tmapfree"+"\t"+"tmapsam"+"\t"+"bowtie2var"+"\n"
+header = "POS"+";"+"REF"+";"+"ALT"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
 multi_data_file3.write(header)
 for key,value in multi_data.items() :
-    multi_data_file3.write(str(key)+"\t")
-    # multi_data_file3.write(str(multi_data[key]["Info"]["REF"])+"\t")
-    # multi_data_file3.write(str(multi_data[key]["Info"]["ALT"])+"\t")
+    multi_data_file3.write(str(key)+";")
+    multi_data_file3.write(str(multi_data[key]["Info"]["REF"])+";")
+    multi_data_file3.write(str(multi_data[key]["Info"]["ALT"])+";")
     for key2,value2 in value.items() :
         a=0
         for invalue in value2.values() :
@@ -215,9 +138,9 @@ for key,value in multi_data.items() :
             
                 else : 
                     if invalue == "NA" :
-                        multi_data_file3.write(str(0)+"\t")
+                        multi_data_file3.write(str(0)+";")
                     else : 
-                        multi_data_file3.write(str(1)+"\t")
+                        multi_data_file3.write(str(1)+";")
                     
             a=a+1
 
