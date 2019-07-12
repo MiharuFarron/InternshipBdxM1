@@ -14,7 +14,7 @@ shinyUI(dashboardPage(
       # Read data
     tabItems(
       tabItem(tabName = "readData",
-              h1("Lecture des données"),
+              h1("Data Reading"),
               fileInput("dataFile",label = NULL,
                         multiple=TRUE,
                         buttonLabel = "Browse...",
@@ -54,7 +54,7 @@ shinyUI(dashboardPage(
               
       ),
       tabItem(tabName = "AnalyseData",
-              h1("Analyse des données"),
+              h1("Data Analyses"),
               tabBox(
                 title="Analyses",
                 id="TabAnal",height="800px",width="12",

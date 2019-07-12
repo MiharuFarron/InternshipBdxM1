@@ -34,7 +34,10 @@ shinyServer(function(input,output,session){
     observeEvent(c(input$slider,input$rawlink),{ 
       df <- reactiveValues(x="")
       df$x <- toJSON(list(file = input$rawlink,
-                        name="SNPFile",header=0,separator="\t",skip=0,meta=list(list(type="id",index=0,name="POS"),list(type="string",index=1,name="REF"),list(type="string",index=2,name="ALT")),sets=list(format="binary",start=input$slider[1],end=input$slider[2])),pretty=TRUE, auto_unbox=TRUE)
+                        name="SNPFile",header=0,separator="\t",skip=0,
+                        meta=list(list(type="id",index=0,name="POS"),list(type="string",index=1,name="REF"),list(type="string",index=2,name="ALT")),
+                        sets=list(list(format="binary",start=input$slider[1],end=input$slider[2]))),
+                     pretty=TRUE, auto_unbox=TRUE)
       output$dowDATA <- downloadHandler(
         filename = function(){paste("test.json")},
         content = function(filename){
