@@ -48,7 +48,6 @@ shinyUI(dashboardPage(
                                     selected = "", inline=T),
                        tags$br(),
                        uiOutput("selectfile"),
-                       div(selectInput("selectplot",label=NULL,choices=c("Upset","GGMissPlot"))),
                        div(actionButton(inputId = "actBtnVisualisation", label = "Visualisation",icon = icon("play") ))
                 )
               )
@@ -61,7 +60,13 @@ shinyUI(dashboardPage(
                 id="TabAnal",height="800px",width="12",
                 tabPanel("Table", dataTableOutput(outputId="table")),
                 tabPanel("Summary",verbatimTextOutput("summary")),
-                tabPanel("Plot", "UpsetR or GgMissUpset",plotOutput("UpsetR"))
+                tabPanel("Plot",div(selectInput("selectplot",label=NULL,choices=c("Upset","GGMissPlot"))), 
+                         numericInput("num",label=h5("Number of Intersections"),value=9),
+                         plotOutput("UpsetR"),
+                         div(id="dowUPSET",h4("Creation of the JSON FILE"),
+                             textInput("rawlink",label="Insert raw link github of the csv file",value="https://raw.githubusercontent.com/User/folder/file.csv"),
+                             sliderInput("slider",label=h4("First column/Last column"),min=0,max=25,value=c(1,9)),
+                             downloadButton("dowDATA","Download"),uiOutput("linkupset")))
               ))
   )),
   skin = "black"
