@@ -72,7 +72,7 @@ for arg in mapper :
     for line in file_pos.readlines() :
         text = text + [line.split()]
         multi_data[text[a][2]+text[a][0]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"},
-        "Info":{"REF":"NA","ALT":"NA"}}
+        "Info":{"REF":"NA","ALT":"NA","CHROM":"NA","POS":"NA"}}
         a=a+1
     file_pos.close()
 for arg in mapper : 
@@ -82,8 +82,12 @@ for arg in mapper :
             if multi_data.has_key(str(record.POS)+str(record.CHROM)) :
                 if record.INFO['DP'] > 10 and record.is_snp : 
                     multi_data[str(record.POS)+str(record.CHROM)]["Coverage"]["%s%s"%(arg,fi)] = record.INFO['DP']
-                    multi_data[str(record.POS)+str(record.CHROM)]["Info"]["ALT"] = record.ALT
+                    alt = record.ALT
+                    multi_data[str(record.POS)+str(record.CHROM)]["Info"]["ALT"] = alt[0]
                     multi_data[str(record.POS)+str(record.CHROM)]["Info"]["REF"] = record.REF
+                    multi_data[str(record.POS)+str(record.CHROM)]["Info"]["CHROM"] = record.CHROM
+                    multi_data[str(record.POS)+str(record.CHROM)]["Info"]["POS"] = record.POS
+
 # Clear full NA rows 
 
 for key, value in multi_data.items() :
@@ -101,7 +105,7 @@ for key, value in multi_data.items() :
 
 print "Creation of csv files begin at \t"+str(localtime)
 multi_data_file = open("test_multi_data_coverage.csv","w")
-header = "POS"+";"+"REF"+";"+"ALT"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
+header = "POS"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
 multi_data_file.write(header)
 for key,value in multi_data.items() :
     multi_data_file.write(str(key)+";")
@@ -120,10 +124,12 @@ multi_data_file.close()
 # Presence Absence CoV
 print "PACOV \n"
 multi_data_file3 = open("test_multi_data_PACov.csv","w")
-header = "POS"+";"+"REF"+";"+"ALT"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
+header = "ID"+";"+"CHROM"+";"+"POS"+";"+"REF"+";"+"ALT"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
 multi_data_file3.write(header)
 for key,value in multi_data.items() :
     multi_data_file3.write(str(key)+";")
+    multi_data_file3.write(str(multi_data[key]["Info"]["CHROM"])+";")
+    multi_data_file3.write(str(multi_data[key]["Info"]["POS"])+";")
     multi_data_file3.write(str(multi_data[key]["Info"]["REF"])+";")
     multi_data_file3.write(str(multi_data[key]["Info"]["ALT"])+";")
     for key2,value2 in value.items() :
