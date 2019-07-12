@@ -1,13 +1,13 @@
 {
-  "file": "https://raw.githubusercontent.com/MiharuFarron/InternshipBdxM1/master/OutputData/test_multi_data_PACov3.csv",
-  "name": "Test",
-  "header": 0,
+  "file" : "https://raw.githubusercontent.com/MiharuFarron/InternshipBdxM1/master/OutputData/test_multi_data_PACov.csv",
+  "name" : "SNPFileCoverage",
+  "header" : 1,
   "separator": "\t",
-  "skip": 0,
-  "meta": 
-    {"type": "id","index": 0,"name": "POS"}
-  ,
-  "sets": 
-    {"format": "binary","start": 1,"end": 9}
-  
+  "skip" : 0,
+  "meta" : [
+    {"type":"id","index":1,"name":"POS"},
+    {"type":"string","index":2,"name":"REF"},
+    {"type":"string","index":3,"name":"ALT"}
+  ],
+  "sets" : {"format":"binary","start":4,"end":12}
 }
