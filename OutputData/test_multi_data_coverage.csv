@@ -1,4 +1,4 @@
-POS;REF;ALT;bwafree;bwavar;tmapvar;bwasam;bowtie2free;bowtie2sam;tmapfree;tmapsam;bowtie2var
+POS;bwafree;bwavar;tmapvar;bwasam;bowtie2free;bowtie2sam;tmapfree;tmapsam;bowtie2var
 24269358chr22;41;38;50;41;16;16;56;56;14
 111407chrUn_gl000211;NA;NA;NA;NA;NA;NA;NA;NA;49
 39301118chr22;51;51;58;51;63;63;58;58;63
