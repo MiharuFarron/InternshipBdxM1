@@ -9,5 +9,5 @@
     {"type":"string","index":1,"name":"REF"},
     {"type":"string","index":2,"name":"ALT"}
   ],
-  "sets" : {"format":"binary","start":3,"end":11}
+  "sets" : [{"format":"binary","start":3,"end":11}]
 }
