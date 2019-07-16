@@ -4,6 +4,7 @@ library(DT)
 library(UpSetR)
 library(naniar)
 library(jsonlite)
+library(glue)
 
 ##########
 #Domitille COQ--ETCHEGARAY
@@ -52,10 +53,24 @@ shinyServer(function(input,output,session){
     sets <- reactiveValues()
     # Update Meta information each time the button MetaData is clicked
     observeEvent(input$ActMeta,{
-      meta$loop <- append(meta$loop,list(list(type=input$select,index=input$num2,name=input$name3)))})
+      meta$loop <- append(meta$loop,list(list(type=input$select,index=input$num2,name=input$name3)))
+      sendSweetAlert(
+        session=session,
+        title="Add",
+        text=glue("Add to the file the meta data : {input$name3}"),
+        type="success"
+        
+      )})
     # Update Sets information each time the button Sets is clicked
     observeEvent(input$ActStets,{
-      sets$loop <- append(sets$loop,list(list(format=input$format,start=input$start,end=input$end)))})
+      sets$loop <- append(sets$loop,list(list(format=input$format,start=input$start,end=input$end)))
+      sendSweetAlert(
+        session=session,
+        title="Add",
+        text=glue("Add to the file the sets data : Column {input$start} to Column {input$end}"),
+        type="success"
+        
+      )})
     # Creation of the Json Object
     observe({df$x <- toJSON(list(file = input$rawlink,
                                  name=input$name,header=input$header2,separator=input$sep,skip=input$skip,
