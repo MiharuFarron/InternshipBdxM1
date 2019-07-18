@@ -15,49 +15,49 @@ June 2019
 #Time
 localtime = time.asctime( time.localtime(time.time()) )
 
-# #Initialization of MutAid
-# target_file = raw_input("Path of the Target File : \n") #Exemple "test_data/InternshipTest/Internship_target_file.txt"
+#Initialization of MutAid
+target_file = raw_input("Path of the Target File : \n") #Exemple "test_data/InternshipTest/Internship_target_file.txt"
 
-# #Modification of the file MutAidOptions_NGS
+#Modification of the file MutAidOptions_NGS
 mapper = ["bowtie2","bwa","tmap"]
-# for arg in mapper : 
-#     OptionMutaid = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_NGS","r")
-#     text = "" 
-#     for line in OptionMutaid.readlines():
-#             if "Mapper_Name" in line and "###" not in line :
-#                 map_name = "Mapper_Name = %s \n"%arg
-#                 text = text + map_name
-#             elif "Target_File" in line and "#" not in line :
-#                 tag_file = "Target_File = %s \n"%target_file
-#                 text = text + tag_file
-#             else :
-#                 text = text + line 
-#     OptionMutaid.close()
+for arg in mapper : 
+    OptionMutaid = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_NGS","r")
+    text = "" 
+    for line in OptionMutaid.readlines():
+            if "Mapper_Name" in line and "###" not in line :
+                map_name = "Mapper_Name = %s \n"%arg
+                text = text + map_name
+            elif "Target_File" in line and "#" not in line :
+                tag_file = "Target_File = %s \n"%target_file
+                text = text + tag_file
+            else :
+                text = text + line 
+    OptionMutaid.close()
 
-# #Creation of a file of options for our different test
-#     File = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_Internship","w")
-#     File.write(text)
-#     File.close()
+#Creation of a file of options for our different test
+    File = open("/net/travail/dcetchegaray/MutAid_v1.0/MutAidOptions_Internship","w")
+    File.write(text)
+    File.close()
 
-# #Run MutAid Pipeline
+#Run MutAid Pipeline
 
-#     print "MutAid Pipeline begin at \t"+str(localtime)
-#     #Directory of the pipeline MutAid
-#     os.chdir("/net/travail/dcetchegaray/MutAid_v1.0/")
-#     os.system("./mutaid --option_file MutAidOptions_Internship")
+    print "MutAid Pipeline begin at \t"+str(localtime)
+    #Directory of the pipeline MutAid
+    os.chdir("/net/travail/dcetchegaray/MutAid_v1.0/")
+    os.system("./mutaid --option_file MutAidOptions_Internship")
 
-# #Copy the files of interest in our directory of work
+#Copy the files of interest in our directory of work
 
-#     print "Copy files of interest begin at \t"+str(localtime)
-#     #Test if the directory exist if not create a new directory
-#     if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg)):
-#         os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg))
-#     #Copy Freebayes vcf Samtools vcf Varscan txt files
-#     os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg,arg))
-#     #Copy Varscan vcf file
-#     os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg))
-#     #Directory of our script
-#     os.chdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/")
+    print "Copy files of interest begin at \t"+str(localtime)
+    #Test if the directory exist if not create a new directory
+    if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg)):
+        os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg))
+    #Copy Freebayes vcf Samtools vcf Varscan txt files
+    os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg,arg))
+    #Copy Varscan vcf file
+    os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg))
+    #Directory of our script
+    os.chdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/")
 
 #VCF parser, text parser
 
