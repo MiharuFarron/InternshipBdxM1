@@ -40,7 +40,7 @@ for arg in mapper :
     File.close()
 
 #Run MutAid Pipeline
-
+    
     print "MutAid Pipeline begin at \t"+str(localtime)
     #Directory of the pipeline MutAid
     os.chdir("/net/travail/dcetchegaray/MutAid_v1.0/")
@@ -50,16 +50,16 @@ for arg in mapper :
 
     print "Copy files of interest begin at \t"+str(localtime)
     #Test if the directory exist if not create a new directory
-    if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg)):
-        os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s"%(arg))
+    if not os.path.isdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/MutAidOutputFiles/%s"%(arg)):
+        os.mkdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/MutAidOutputFiles/%s"%(arg))
     #Copy Freebayes vcf Samtools vcf Varscan txt files
-    os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg,arg))
+    os.system("cp ./test_output/ngs_output_dir/mapping/%s/*.vcf ./test_output/ngs_output_dir/mapping/%s/*.txt /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/MutAidOutputFiles/%s/"%(arg,arg,arg))
     #Copy Varscan vcf file
-    os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/Hg19Galaxy/%s/"%(arg,arg))
+    os.system("cp ./test_output/ngs_output_dir/variant_files/%s/ptest.vcf /net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/MutAidOutputFiles/%s/"%(arg,arg))
     #Directory of our script
     os.chdir("/net/cremi/dcetchegaray/StageBD/DCE/InternshipBdxM1/")
 
-#VCF parser, text parser
+# VCF parser, text parser
 
 print "Parsing files begin at \t"+str(localtime)
 varcall = ["","_samtools_variants","_freebayes_variants"]
@@ -68,7 +68,7 @@ multi_data= {}
 for arg in mapper :
     text = []
     a=0
-    file_pos = open("./Hg19Galaxy/%s/ptest_pos.txt"%arg,"r")
+    file_pos = open("./MutAidOutputFiles/%s/ptest_pos.txt"%arg,"r")
     for line in file_pos.readlines() :
         text = text + [line.split()]
         multi_data[text[a][2]+text[a][0]] = {"Coverage" : {"tmap" : "NA", "tmap_samtools_variants" : "NA", "tmap_freebayes_variants": "NA","bwa" : "NA", "bwa_samtools_variants" : "NA", "bwa_freebayes_variants": "NA","bowtie2" : "NA", "bowtie2_samtools_variants" : "NA", "bowtie2_freebayes_variants": "NA"},
@@ -77,7 +77,7 @@ for arg in mapper :
     file_pos.close()
 for arg in mapper : 
     for fi in varcall : 
-        vcf_reader = vcf.Reader(open("./Hg19Galaxy/%s/ptest%s.vcf"%(arg,fi),"r"))
+        vcf_reader = vcf.Reader(open("./MutAidOutputFiles/%s/ptest%s.vcf"%(arg,fi),"r"))
         for record in vcf_reader :
             if multi_data.has_key(str(record.POS)+str(record.CHROM)) :
                 if record.INFO['DP'] > 10 and record.is_snp : 
@@ -105,10 +105,14 @@ for key, value in multi_data.items() :
 
 print "Creation of csv files begin at \t"+str(localtime)
 multi_data_file = open("test_multi_data_coverage.csv","w")
-header = "POS"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
+header = "ID"+";"+"CHROM"+";"+"POS"+";"+"REF"+";"+"ALT"+";"+"bwafree"+";"+"bwavar"+";"+"tmapvar"+";"+"bwasam"+";"+"bowtie2free"+";"+"bowtie2sam"+";"+"tmapfree"+";"+"tmapsam"+";"+"bowtie2var"+"\n"
 multi_data_file.write(header)
 for key,value in multi_data.items() :
     multi_data_file.write(str(key)+";")
+    multi_data_file.write(str(multi_data[key]["Info"]["CHROM"])+";")
+    multi_data_file.write(str(multi_data[key]["Info"]["POS"])+";")
+    multi_data_file.write(str(multi_data[key]["Info"]["REF"])+";")
+    multi_data_file.write(str(multi_data[key]["Info"]["ALT"])+";")
     for key2,value2 in value.items() :
         a=0
         for invalue in value2.values() :

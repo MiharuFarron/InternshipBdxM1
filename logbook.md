@@ -11,14 +11,14 @@
     <<RDV P.Thebault Présentation du sujet>>
 
 ### Day 2 :
-- Try to run MutAid with test data (MutAid) and test data (TD Galaxy Mycobacterium)
+- Try to run MutAid with test data (MutAid) and test data (TD Galaxy)
     - FastQC OK
     - Map (BWA) FAIL
     - Variant (varscan) FAIL
 
 ### Day 3 : 
 - Try to find solution to import files of hg19 (prepref program)
-- Try to run MutAid with test data (TD Galaxy Mycobacterium)
+- Try to run MutAid with test data (TD Galaxy)
     - FastQC OK
     - Map (BWA) OK
     - Variant (varscan) FAIL -> 0 SNP found
@@ -112,7 +112,8 @@ pip install PyVcf
 
 ### Day 17 :
 - **PCA/Singular Value Decomposition/matrix completion is implemented** in the package **missMDA** for numerical, categorical and mixed data. **softImpute** contains several methods for iterative matrix completion, as well as filling and **denoiseR** for numerical variables, or mimi that uses low rank assumption to impute mixed datasets. The package **pcaMethods** offers some Bayesian implementation of PCA with missing data. **NIPALS** (based on SVD computation) is implemented in the packages mixOmics (for PCA and PLS), **ade4**, **nipals** and **plsRglm** (for generalized model PLS). **ddsPLS** implements a multi-block imputation method based on PLS in a supervise framework.**ROptSpace** and **CMF** proposes a matrix completion method under low-rank assumption and collective matrix factorization for imputation using Bayesian matrix completion for groups of variables (binary, quantitative, poisson). Imputation for groups is also avalaible in the **missMDA** in the function imputeMFA. SOURCE : https://rviews.rstudio.com/2018/10/26/cran-s-new-missing-values-task-view/
-- Creation of PA multivariate table
+- Creation of PA multivariate table 
+
 <<RDV avec P.Thebault et E.Darbo Modification des valeurs POS POS+CHR Only SNP Scale Varscan value  Voir possibilté de Présence Absence>>
 
 ### Day 18 : 
@@ -131,13 +132,14 @@ pip install PyVcf
 - Creation of R Shiny App
 - Gg Miss Upset Package Naniar  "An upset plot from the UpSetR package can be used to visualise the patterns of missingness, or rather the combinations of missingness across cases. To see combinations of missingness and intersections of missingness amongst variables, use the gg_miss_upset function" Source : https://cran.r-project.org/web/packages/naniar/vignettes/naniar-visualisation.html
 
-### Day 23/28 :
-####
-
-### Day 29/30 :
+### Day 23/30 :
 - R Shiny app amelioration
 
 ### Day 31 :
 - Creation of JSON file by user selection 
+
+### Day 32/35 :
+- Corrections, add comments to main script
+- Writing documentation
 
 
